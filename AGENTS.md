@@ -46,7 +46,8 @@ podman run --rm -v "$PWD:/repo:ro,Z" voidlinux/voidlinux \
 - The container's default mirror had a certificate mismatch during the audit.
   The test used `repo-default.voidlinux.org`; that is an image issue, not a
   script issue.
-- The test container has no kernel package, so the reboot check skips itself.
+- The kernel check was exercised with `linux6.12` installed; the container
+  shares the host kernel, so it warned.
 
 ## Definition of done
 

@@ -101,6 +101,7 @@ A real run against a `voidlinux/voidlinux` container, 59 packages behind:
 | Image | Result |
 |-------|--------|
 | `voidlinux/voidlinux` | 59 packages upgraded, package database clean, no orphans, no old kernels |
+| `voidlinux/voidlinux` + `linux6.12` | 59 packages upgraded; the kernel check ran and warned because the container shares the host kernel |
 
 The container's default mirror had a certificate mismatch, so the test used
 `repo-default.voidlinux.org`. That is a container image issue, not a script
@@ -126,8 +127,9 @@ podman run --rm -v "$PWD:/repo:ro,Z" voidlinux/voidlinux \
 - It does not upgrade Void from one release to the next; Void is rolling.
 - It does not build from `xbps-src` or select kernels.
 - `vkpurge rm all` keeps only the running kernel.
-- The test container has no kernel package, so the reboot check was skipped
-  there; the kernel comparison was verified by inspecting `xbps-query -l`.
+- The kernel check was exercised with `linux6.12` installed. The container
+  shares the host kernel, so it correctly warned that no installed kernel
+  matches the running one.
 
 ## License
 

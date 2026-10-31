@@ -46,3 +46,9 @@ check only reports.
 `pkg-version`, and `ver=${pkg##*-}` yields the version that `uname -r` reports.
 The test container has no kernel package, so the check skipped itself there.
 **Status:** not a bug. No change.
+
+## Post-audit verification
+
+- `voidlinux/voidlinux` with `linux6.12` installed: 59 packages upgraded, the
+  package database check passed, and the reboot check ran. It warned because
+  the container shares the host kernel, which is the correct result.
