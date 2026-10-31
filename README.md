@@ -40,8 +40,9 @@ sudo ./void-system-maintenance.sh
 
 ## What Void does differently
 
-- **`xbps-pkgdb -a` is the repair step.** It checks every installed package's
-  database entry, files and dependencies before the upgrade runs.
+- **`xbps-pkgdb -a` is the integrity check.** It checks every installed
+  package's database entry, files and dependencies before the upgrade runs; the
+  upgrade itself repairs version drift.
 - **`vkpurge` removes old kernels** and keeps the running one, which is the
   supported way to reclaim `/boot` space on Void.
 - **Orphans are a first-class concept.** `xbps-remove -o` removes packages
@@ -104,6 +105,29 @@ A real run against a `voidlinux/voidlinux` container, 59 packages behind:
 The container's default mirror had a certificate mismatch, so the test used
 `repo-default.voidlinux.org`. That is a container image issue, not a script
 issue: the script uses whatever repositories you have configured.
+
+## Verify it yourself
+
+```bash
+make check
+```
+
+`make check` runs `bash -n`, shellcheck when installed, the smoke tests and the
+asset check. The screenshots come from a real `voidlinux/voidlinux` container:
+
+```bash
+podman run --rm -v "$PWD:/repo:ro,Z" voidlinux/voidlinux \
+  sh -c 'xbps-install -S bash >/dev/null && bash /repo/void-system-maintenance.sh --dry-run'
+```
+
+## Limits
+
+- It does not roll back and does not take snapshots.
+- It does not upgrade Void from one release to the next; Void is rolling.
+- It does not build from `xbps-src` or select kernels.
+- `vkpurge rm all` keeps only the running kernel.
+- The test container has no kernel package, so the reboot check was skipped
+  there; the kernel comparison was verified by inspecting `xbps-query -l`.
 
 ## License
 
