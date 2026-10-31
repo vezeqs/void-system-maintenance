@@ -57,8 +57,8 @@ podman run --rm -v "$PWD:/repo:ro,Z" voidlinux/voidlinux \
 - [ ] The change has a test in `tests/` that fails without it.
 - [ ] `README.md` still matches behaviour.
 - [ ] `CHANGELOG.md` has an entry for user-visible changes.
-- [ ] If the script changed, regenerate `assets/preview.png` and update
-      `assets/source.sha256`.
+- [ ] If the script changed, regenerate `assets/preview.png` and
+      `assets/upgrade.png`, then update `assets/source.sha256`.
 - [ ] No secrets, no `rm -rf`, no new dependency.
 
 ## Do not touch

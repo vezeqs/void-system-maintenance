@@ -123,7 +123,8 @@ podman run --rm -v "$PWD:/repo:ro,Z" voidlinux/voidlinux \
   sh -c 'xbps-install -S bash >/dev/null && bash /repo/void-system-maintenance.sh --dry-run'
 ```
 
-`make container-test` runs the preview-failure test (needs podman).
+`make container-test` runs the preview-failure test (needs podman); CI runs it
+in `.github/workflows/container-tests.yml`.
 
 ## Limits
 
