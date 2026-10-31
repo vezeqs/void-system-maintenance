@@ -116,6 +116,8 @@ make check
 `make check` runs `bash -n`, shellcheck when installed, the smoke tests and the
 asset check. The screenshots come from a real `voidlinux/voidlinux` container:
 
+`tests/assets.sh` also verifies `assets/source.sha256`: if the script changes without regenerating the screenshots, `make check` fails.
+
 ```bash
 podman run --rm -v "$PWD:/repo:ro,Z" voidlinux/voidlinux \
   sh -c 'xbps-install -S bash >/dev/null && bash /repo/void-system-maintenance.sh --dry-run'
