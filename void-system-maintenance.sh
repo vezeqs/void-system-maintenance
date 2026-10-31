@@ -100,18 +100,27 @@ info "==> Checking what would change"
 if (( DRY_RUN )); then
   info "==> Dry run, skipping the preview queries"
 else
-  preview=$(xbps-install -un 2>/dev/null || true)
-  upgrades=$(grep -c . <<<"$preview" || true)
-  info "==> Packages to upgrade: ${PURPLE}${upgrades}${NC}"
-  if (( upgrades > 0 )); then
-    head -10 <<<"$preview" | sed 's/^/    /'
-    if (( upgrades > 10 )); then
-      info "==> ... and $((upgrades - 10)) more"
+  rc=0
+  preview=$(xbps-install -un 2>/dev/null) || rc=$?
+  if (( rc == 0 )); then
+    upgrades=$(grep -c . <<<"$preview" || true)
+    info "==> Packages to upgrade: ${PURPLE}${upgrades}${NC}"
+    if (( upgrades > 0 )); then
+      head -10 <<<"$preview" | sed 's/^/    /'
+      if (( upgrades > 10 )); then
+        info "==> ... and $((upgrades - 10)) more"
+      fi
     fi
+  else
+    warn "==> Could not check for updates (xbps exit $rc)"
+    info "==> The upgrade below still runs"
   fi
 
-  orphans=$(xbps-remove -on 2>/dev/null || true)
-  if [[ -n $orphans ]]; then
+  rc=0
+  orphans=$(xbps-remove -on 2>/dev/null) || rc=$?
+  if (( rc != 0 )); then
+    warn "==> Could not list orphaned packages (xbps exit $rc)"
+  elif [[ -n $orphans ]]; then
     warn "==> Orphaned packages to remove: $(tr '\n' ' ' <<<"$orphans")"
   fi
 fi

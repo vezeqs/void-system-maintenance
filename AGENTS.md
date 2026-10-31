@@ -49,6 +49,8 @@ podman run --rm -v "$PWD:/repo:ro,Z" voidlinux/voidlinux \
 - The kernel check was exercised with `linux6.12` installed; the container
   shares the host kernel, so it warned.
 
+- A failed `xbps-install -un` must be reported, not turned into zero. `tests/preview_failure.sh` pins it.
+
 ## Definition of done
 
 - [ ] `make check` passes.

@@ -18,7 +18,7 @@ History read: `f18e703` orphan removal, `b56238d` initial release. Pull
 requests: none. There is no `origin` remote, so `gh pr list` has nothing to
 read.
 
-Findings: 4 (3 fixed, 1 not a bug).
+Findings: 5 (4 fixed, 1 not a bug).
 
 ## F1 — README called xbps-pkgdb a repair (Medium)
 
@@ -46,6 +46,15 @@ check only reports.
 `pkg-version`, and `ver=${pkg##*-}` yields the version that `uname -r` reports.
 The test container has no kernel package, so the check skipped itself there.
 **Status:** not a bug. No change.
+
+## F5 — A failed update check is reported as zero (High)
+
+**Claim:** the preview shows how many packages would be upgraded.
+**Evidence:** with a mock `xbps-install` whose `-un` exits 1, the script printed
+"Packages to upgrade: 0".
+**Cause:** `preview=$(... || true)` discarded the exit status.
+**Fix:** check the status and warn when the check fails.
+**Status:** fixed, test `tests/preview_failure.sh`.
 
 ## Post-audit verification
 
