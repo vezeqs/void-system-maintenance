@@ -144,10 +144,9 @@ info "==> Removing orphaned packages"
 orphans=$(xbps-remove -on 2>/dev/null || true)
 if [[ -n $orphans ]]; then
   if (( DRY_RUN )); then
-    printf '%s[DRY-RUN]%s xbps-remove -oy %s\n' "$YELLOW" "$NC" "$(tr '\n' ' ' <<<"$orphans")"
+    printf '%s[DRY-RUN]%s xbps-remove -oy\n' "$YELLOW" "$NC"
   else
-    # shellcheck disable=SC2086
-    xbps-remove -oy $orphans
+    xbps-remove -oy
   fi
 else
   ok "==> No orphaned packages"
